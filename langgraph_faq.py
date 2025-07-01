@@ -13,13 +13,10 @@ builder.add_node("ask_followup_question", ask_followup_question)
 builder.set_entry_point("retrieve_answer")
 builder.add_edge("retrieve_answer", "is_confident_enough")
 builder.add_conditional_edges(
-    "is_confident_enough",
-    lambda state: state["condition"],  # must match "yes" or "no"
-    {
+    "is_confident_enough", lambda state: state["condition"],{
         "yes": "generate_answer",
         "no": "ask_followup_question"
-    }
-)
+    })
 builder.add_edge("generate_answer", END)
 builder.add_edge("ask_followup_question", END)
 

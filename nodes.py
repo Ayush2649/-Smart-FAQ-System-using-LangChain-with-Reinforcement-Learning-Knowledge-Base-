@@ -3,33 +3,30 @@ from retriever import retriever
 # Define your custom nodes
 def retrieve_answer(state):
     query = state["question"]
-    docs = retriever.get_relevant_documents(query)
-    return {
-        **state,
-        "retrieved_docs": docs
-    }
+    docs_with_scores = retriever.similarity_search_with_score(query, k=1)
+
+    docs = []
+    for doc, score in docs_with_scores:
+        doc.metadata["score"] = score
+        docs.append(doc)
+
+    return {**state, "retrieved_docs": docs}
+
 
 def is_confident_enough(state):
     # Assume the retriever gives score in metadata
+    docs = state["retrieved_docs"]
+    print(f"Retrived docs:\n{docs}")
     doc = state["retrieved_docs"][0]
     score = doc.metadata.get("score", 0.0)
     
-    return {
-        **state,
-        "condition": "no" if score < 0 else "yes"
-    }
+    return {**state,"condition": "yes" if score > 0.75 else "no"}
 
 
 def generate_answer(state):
     answer = state["retrieved_docs"][0].page_content
-    return {
-        **state,
-        "answer": answer
-    }
+    return {**state,"answer": answer}
 
 
 def ask_followup_question(state):
-    return {
-        **state,
-        "followup": "Can you please clarify your question?"
-    }
+    return {**state,"followup": "Can you please clarify your question?"}
