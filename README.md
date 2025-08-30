@@ -1,17 +1,38 @@
-# 🤖 Smart FAQ System using LangGraph
+# 📘 Smart FAQ System (with Reinforcement Learning Knowledge Base)
 
-A context-aware, LLM-powered FAQ assistant built using [LangGraph](https://www.langgraph.dev/), LangChain, and sentence-transformer embeddings. The system retrieves answers from a knowledge base and dynamically routes user queries based on confidence scores.
+This project is a Smart FAQ Retrieval System powered by LangChain, FAISS, and HuggingFace embeddings.
+
+It allows you to:
+- Ask questions in natural language
+- Retrieve relevant answers from a FAQ dataset (CSV)
+- Supports FAQs on Reinforcement Learning (scraped from StackOverflow)
+- Nicely formatted console output (with Markdown support)
 
 ---
 
 ## 🚀 Features
 
-- ✅ Smart question answering over a CSV FAQ file
-- ✅ Semantic search with HuggingFace embeddings
-- ✅ LangGraph-powered flow control based on confidence
-- ✅ Follow-up prompt if LLM is unsure
-- ✅ REPL-style CLI for continuous Q&A
-- ✅ Modular code: retrieval, graph, and state are cleanly separated
+- ✅ Vector similarity search using FAISS 🔍
+- ✅ HuggingFace all-mpnet-base-v2 embeddings for high-quality semantic matching 🤖
+- ✅ Extendable to any custom FAQ dataset (just replace faq_data.csv) 📂
+- ✅ Interactive CLI chatbot that responds until you type quit 💬
+- ✅ Preserves Markdown/Code/Tables in answers for better readability 📑
+
+---
+
+## 📸 Demo Screenshots
+
+### 🔹The Setup
+![alt text](<Screenshot (545).png>)
+
+### 🔹 Start Screen
+![alt text](<Screenshot 2025-08-30 164951.png>)
+
+### 🔹 Asking a Question
+![alt text](<Screenshot 2025-08-30 165112.png>)
+
+### 🔹 Answer Formatting
+![alt text](<Screenshot 2025-08-30 165125.png>)
 
 ---
 
@@ -20,16 +41,16 @@ A context-aware, LLM-powered FAQ assistant built using [LangGraph](https://www.l
 ```bash
 smart-faq-system/
 ├── data/
-│   └── faq_data.csv              # Your FAQ dataset
-├── vectorstore/
-│   └── faiss_index/              # Saved FAISS index (generated once)
-├── embed_store.py               # One-time script to embed and store FAQ data
-├── retriever.py                 # Loads vectorstore for runtime retrieval
-├── nodes.py                     # LangGraph nodes: retrieval, logic, answer, etc.
-├── state.py                     # FAQState definition for typed LangGraph state
-├── langgraph_faq.py             # Graph creation and routing logic
-├── main.py                      # CLI loop: ask questions until "quit"
-└── requirements.txt             # Python dependencies
+│   └── faq_data.csv              # FAQ dataset (Reinforcement Learning or Business FAQs)
+├── vectorstore/                  # Auto-generated FAISS index (created on first run)
+├── screenshots/                  # Store your demo images here
+├── embed_store.py                # Script to embed CSV and create vectorstore
+├── retriever.py                  # Loads FAISS and retrieves relevant answers
+├── nodes.py                      # LangGraph nodes (retrieval, answer, etc.)
+├── state.py                      # Defines FAQState for LangGraph
+├── langgraph_faq.py              # Graph creation and routing logic
+├── main.py                       # CLI interface to interact with the system
+└── requirements.txt              # Python dependencies
 ````
 
 ---
@@ -52,22 +73,31 @@ smart-faq-system/
 
 ## 📦 Setup Instructions
 
-### 1. Clone the repo
+### 1️⃣ Clone the repo
 
 ```bash
 git clone https://github.com/ceodaniyal/smart-faq-system.git
 cd smart-faq-system
 ```
 
-### 2. Install dependencies
+### 2️⃣ Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Add your FAQ data
+### 3️⃣ Prepare Your Data
 
-Place your `faq_data.csv` file in the `data/` directory. A sample is already included.
+- Default file: data/faq_data.csv
+
+- Format:
+   question,answer
+   What is Q-learning?,Q-learning is an off-policy RL algorithm...
+   What is SARSA?,SARSA is an on-policy RL algorithm...
+
+- You can replace this CSV with your own FAQs.
+
+### 4️⃣ Build Vectorstore
 
 ### 4. Generate embeddings (run once)
 
@@ -83,19 +113,34 @@ python main.py
 
 ---
 
-## 📝 FAQ Data Format (`faq_data.csv`)
+## 🎮 Example Usage
 
 ```csv
-question,answer
-What are your business hours?,Our business hours are 9 AM to 6 PM, Monday through Friday.
-How can I reset my password?,Click "Forgot Password" on the login page and follow the instructions.
+📘 Smart FAQ System (Type 'quit' to exit)
+
+You: What is the difference between Q-learning and SARSA?
+
+🤖 Answer:
+
+**Q-learning vs SARSA**
+
+|             | SARSA | Q-learning |
+|-------------|-------|------------|
+| Choosing A' |  π    |    π       |
+| Updating Q  |  π    |    μ       |
+
+- **Q-learning** → off-policy (evaluates μ while following π)  
+- **SARSA** → on-policy (follows π consistently)  
+
 ...
+--------------------------------------------------------------------------------
 ```
 
 ---
 
 ## 🔧 Tech Stack
 
+* Python 3.9+
 * [LangGraph](https://www.langgraph.dev/)
 * [LangChain](https://www.langchain.com/)
 * [HuggingFace Embeddings](https://huggingface.co/sentence-transformers/all-mpnet-base-v2)
@@ -103,6 +148,20 @@ How can I reset my password?,Click "Forgot Password" on the login page and follo
 * Python 3.9+
 
 ---
+
+## 📌 Notes
+
+- If you update your dataset, delete the vectorstore/ folder and re-run:
+
+```bash
+python embed_store.py
+```
+
+- For better formatting, answers are rendered with Markdown in the console.
+
+## 🤝 Contributing
+
+Pull requests are welcome! If you have more FAQ datasets (e.g., Machine Learning, NLP, Cybersecurity), feel free to add them.
 
 ## ✨ Future Improvements
 
@@ -113,12 +172,6 @@ How can I reset my password?,Click "Forgot Password" on the login page and follo
 
 ---
 
-## 🧑‍💻 Author
-
-Made with 💡 by [@ceodaniyal](https://github.com/ceodaniyal)
-
----
-
 ## 📄 License
 
-MIT License
+MIT License © 2025 Ayush Sahu(https://github.com/Ayush2649)

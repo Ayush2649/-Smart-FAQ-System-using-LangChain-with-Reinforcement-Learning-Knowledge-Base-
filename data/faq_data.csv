@@ -1,11 +1,1452 @@
 question,answer
-What are your business hours?,Our business hours are 9 AM to 6 PM, Monday through Friday.
-How can I reset my password?,You can reset your password by clicking "Forgot Password" on the login page.
-Where are you located?,We are located at 123 Main Street, New York, NY.
-How can I contact customer support?,You can contact us at support@example.com or call (123) 456-7890.
-What is your return policy?,We accept returns within 30 days of purchase with the original receipt.
-Do you offer international shipping?,Yes, we ship to most countries worldwide. Shipping fees apply.
-Can I track my order?,Yes, you’ll receive a tracking link via email after your order ships.
-What payment methods do you accept?,We accept Visa, MasterCard, PayPal, and Apple Pay.
-Is there a warranty on your products?,Yes, all products come with a one-year limited warranty.
-How long does delivery take?,Standard delivery takes 3–5 business days. Express options available.
+What is the difference between Q-learning and SARSA?,"When I was learning this part, I found it very confusing too, so I put together the two pseudo-codes from R.Sutton and A.G.Barto hoping to make the difference clearer.
+
+
+
+
+Blue boxes highlight the part where the two algorithms actually differ. Numbers highlight the more detailed difference to be explained later.
+
+
+TL;NR
+:
+
+
+|             | SARSA | Q-learning |
+|:-----------:|:-----:|:----------:|
+| Choosing A' |   π   |      π     |
+| Updating Q  |   π   |      μ     |
+
+
+
+where π is a ε-greedy policy (e.g. ε > 0 with exploration), and μ is a greedy policy (e.g. ε == 0, NO exploration).
+
+
+
+
+Given that Q-learning is using different policies for choosing next action A' and updating Q. In other words, it is trying to evaluate μ (target policy) while following another policy π (behavior policy), so it's an off-policy algorithm.
+
+
+
+
+In contrast, SARSA uses π all the time, hence it is an on-policy algorithm.
+
+
+
+
+
+
+More detailed explanation
+:
+
+
+
+
+The most important difference between the two is how Q is updated after each action. SARSA uses the Q' following a ε-greedy policy exactly, as A' is drawn from it. In contrast, Q-learning uses the maximum Q' over all possible actions for the next step. This makes it look like following a greedy policy with ε=0, i.e. NO exploration in this part.
+
+
+
+
+However, when actually taking an action, Q-learning still uses the action taken from a ε-greedy policy. This is why ""Choose A ..."" is inside the repeat loop.
+
+
+
+
+Following the loop logic in Q-learning, A' is still from the ε-greedy policy.
+
+
+
+
+
+"
+How to train an artificial neural network to play Diablo 2 using visual input?,"I can see that you are worried about how to train the ANN, but 
+this project hides a complexity
+ that you might not be aware of. Object/character recognition on computer games through 
+image processing
+ it's a highly challenging task (not say 
+crazy
+ for FPS and RPG games). I don't doubt of your skills and I'm also not saying it can't be done, but you can easily spend 10x more time working on recognizing stuff than implementing the ANN itself (assuming you already have experience with 
+digital image processing
+ techniques).
+
+
+I think your idea is very 
+interesting and
+ also very 
+ambitious
+. At this point you might want to reconsider it. I sense that this project is something you are planning for the university, so if the focus of the work is really ANN you should probably pick another game, something more simple.
+
+
+I remember that someone else came looking for tips on a 
+different but somehow similar project
+ not too long ago. It's worth checking it out.
+
+
+On the other hand, there might be better/easier approaches for identifying objects in-game if you're accepting suggestions. But first, let's call this project for what you want it to be: a 
+smart-bot
+. 
+
+
+One method
+ for implementing bots 
+accesses the memory of the game client
+ to find relevant information, such as the location of the character on the screen and it's health. Reading computer memory is trivial, but figuring out exactly where in memory to look for is not. Memory scanners like 
+Cheat Engine
+ can be very helpful for this.
+
+
+Another method
+, which works under the game, involves manipulating rendering information. All objects of the game must be rendered to the screen. This means that the locations of all 3D objects will eventually be sent to the video card for processing. Be ready for some serious debugging.
+
+
+In this answer I briefly described 2 methods to accomplish what you want through image processing. If you are interested in them you can find more about them on 
+Exploiting Online Games
+ (chapter 6), an excellent book on the subject.
+
+"
+What is the difference between value iteration and policy iteration?,"Let's look at them side by side. The key parts for comparison are highlighted. Figures are from Sutton and Barto's book: 
+Reinforcement Learning: An Introduction
+.
+
+
+
+Key points:
+
+
+
+
+Policy iteration
+ includes: 
+policy evaluation
+ + 
+policy improvement
+, and the two are repeated iteratively until policy converges.
+
+
+Value iteration
+ includes: 
+finding optimal value function
+ + one 
+policy extraction
+. There is no repeat of the two because once the value function is optimal, then the policy out of it should also be optimal (i.e. converged).
+
+
+Finding optimal value function
+ can also be seen as a combination of policy improvement (due to max) and truncated policy evaluation (the reassignment of v_(s) after just one sweep of all states regardless of convergence).
+
+
+The algorithms for 
+policy evaluation
+ and 
+finding optimal value function
+ are highly similar except for a max operation (as highlighted)
+
+
+Similarly, the key step to 
+policy improvement
+ and 
+policy extraction
+ are identical except the former involves a stability check.
+
+
+
+
+In my experience, 
+policy iteration
+ is faster than 
+value iteration
+, as a policy converges more quickly than a value function. I remember this is also described in the book.
+
+
+I guess the confusion mainly came from all these somewhat similar terms, which also confused me before. 
+
+"
+Training a Neural Network with Reinforcement learning,"There are some research papers on the topic:
+
+
+
+
+Efficient Reinforcement Learning Through Evolving Neural Network Topologies (2002)
+ 
+
+
+Reinforcement Learning Using Neural Networks, with Applications to Motor Control
+
+
+Reinforcement Learning Neural Network To The Problem Of Autonomous Mobile Robot Obstacle Avoidance
+
+
+
+
+And some code:
+
+
+
+
+Code examples
+ for neural network reinforcement learning.
+
+
+
+
+Those are just some of the top google search results on the topic. The first couple of papers look like they're pretty good, although I haven't read them personally. I think you'll find even more information on neural networks with reinforcement learning if you do a quick search on Google Scholar.
+
+"
+What is the way to understand Proximal Policy Optimization Algorithm in RL?,"To better understand PPO, it is helpful to look at the main contributions of the paper, which are: 
+(1)
+ the Clipped Surrogate Objective and 
+(2)
+ the use of ""multiple epochs of stochastic gradient ascent to perform each policy update"".
+
+
+
+
+From the original 
+PPO paper
+:
+
+
+
+
+We have introduced [PPO], a family of policy optimization methods that use 
+multiple epochs of stochastic gradient ascent to perform each policy update
+. These methods have the stability and reliability of trust-region [
+TRPO
+] methods but are much simpler to implement, requiring 
+only a few lines of code change to a vanilla policy gradient implementation
+, applicable in more general settings (for example, when using a joint architecture for the policy and value function), and have better overall performance.
+
+
+
+
+
+
+1. The Clipped Surrogate Objective
+
+
+The Clipped Surrogate Objective is a drop-in replacement for the policy gradient objective that is designed to improve training stability by limiting the change you make to your policy at each step.
+
+
+For vanilla policy gradients (e.g., REINFORCE) --- which you should be familiar with, or 
+familiarize yourself with
+ before you read this --- the objective used to optimize the neural network looks like:
+
+
+
+
+This is the standard formula that you would see in the 
+Sutton book
+, and 
+other
+ 
+resources
+, where the A-hat could be the discounted return (as in REINFORCE) or the advantage function (as in 
+GAE
+) for example.  By taking a gradient ascent step on this loss with respect to the network parameters, you will incentivize the actions that led to higher reward.
+
+
+The vanilla policy gradient method uses the log probability of your action (log π(a | s)) to trace the impact of the actions, but you could imagine using another function to do this.  Another such function, introduced in 
+this paper
+, uses the probability of the action under the 
+current policy
+ (π(a|s)), divided by the probability of the action under your 
+previous policy
+ (π_old(a|s)).  This looks a bit similar to importance sampling if you are familiar with that:
+
+
+
+
+This r(θ) will be greater than 1 when the action is 
+more
+ probable for your 
+current
+ policy than it is for your 
+old
+ policy; it will be between 0 and 1 when the action is less probable for your current policy than for your old.
+
+
+Now to build an objective function with this r(θ), we can simply swap it in for the log π(a|s) term.  This is what is done in TRPO:
+
+
+
+
+But what would happen here if your action is much more probable (like 100x more) for your current policy?
+  r(θ) will tend to be really big and lead to taking big gradient steps that might wreck your policy.  To deal with this and other issues, TRPO adds several extra bells and whistles (e.g., KL Divergence constraints) to limit the amount the policy can change and help guarantee that it is monotonically improving.
+
+
+Instead of adding all these extra bells and whistles, what if we could build these stabilizing properties into the objective function?  As you might guess, this is what PPO does.  It gains the same performance benefits  as TRPO and avoids the complications by optimizing this simple (but kind of funny looking) Clipped Surrogate Objective:
+
+
+
+
+The first term (blue) inside the minimization is the same (r(θ)A) term we saw in the TRPO objective.  The second term (red) is a version where the (r(θ)) is clipped between (1 - e, 1 + e). (in the paper they state a good value for e is about 0.2, so r can vary between ~(0.8, 1.2)).  Then, finally, the minimization of both of these terms is taken (green).
+
+
+Take your time and look at the equation carefully and make sure you know what all the symbols mean, and mathematically what is happening.  Looking at the code may also help; here is the relevant section in both the OpenAI 
+baselines
+ and 
+anyrl-py
+ implementations.
+
+
+Great.
+
+
+Next, let's see what effect the L clip function creates. Here is a diagram from the paper that plots the value of the clip objective for when the Advantage is positive and negative:
+
+
+
+
+On the left half of the diagram, where  (A > 0), this is where the action had an estimated positive effect on the outcome.  On the right half of the diagram, where (A < 0), this is where the action had an estimated negative effect on the outcome.
+
+
+Notice how on the left half, the r-value gets clipped if it gets too high.  This will happen if the action became a lot more probable under the current policy than it was for the old policy.  When this happens, we do not want to get greedy and step too far (because this is just a local approximation and sample of our policy, so it will not be accurate if we step too far), and so we clip the objective to prevent it from growing.  (This will have the effect in the backward pass of blocking the gradient --- the flat line causing the gradient to be 0).
+
+
+On the right side of the diagram, where the action had an estimated 
+negative
+ effect on the outcome, we see that the clip activates near 0, where the action under the current policy is unlikely.  This clipping region will similarly prevent us from updating too much to make the action much less probable after we already just took a big step to make it less probable.
+
+
+So we see that both of these clipping regions prevent us from getting too greedy and trying to update too much at once and leaving the region where this sample offers a good estimate.
+
+
+But why are we letting the r(θ) grow indefinitely on the far right side of the diagram?  This seems odd as first, but what would cause r(θ) to grow really large in this case?
+  r(θ) growth in this region will be caused by a gradient step that made our action  
+a lot more probable
+, and it turning out to make our policy 
+worse
+.  If that was the case, we would want to be able to undo that gradient step.  And it just so happens that the L clip function allows this.  The function is negative here, so the gradient will tell us to walk the other direction and make the action less probable by an amount proportional to how much we screwed it up.  (Note that there is a similar region on the far left side of the diagram, where the action is good and we accidentally made it less probable.)
+
+
+These ""undo"" regions explain why we must include the weird minimization term in the objective function.  They correspond to the unclipped r(θ)A having a lower value than the clipped version and getting returned by the minimization.  This is because they were steps in the wrong direction (e.g., the action was good but we accidentally made it less probable).  If we had not included the min in the objective function, these regions would be flat (gradient = 0) and we would be prevented from fixing mistakes.
+
+
+Here is a diagram summarizing this:
+
+
+
+
+And that is the gist of it.  The Clipped Surrogate Objective is just a drop-in replacement you could use in the vanilla policy gradient.  The clipping limits the effective change you can make at each step in order to improve stability, and the minimization allows us to fix our mistakes in case we screwed it up.  One thing I didn't discuss is what is meant by PPO objective forming a ""lower bound"" as discussed in the paper.  For more on that, I would suggest 
+this part
+ of a lecture the author gave.
+
+
+2. Multiple epochs for policy updating
+
+
+Unlike vanilla policy gradient methods, and 
+because of the Clipped Surrogate Objective function
+, PPO allows you to run multiple epochs of gradient ascent on your samples without causing destructively large policy updates. This allows you to squeeze more out of your data and reduce sample inefficiency.
+
+
+PPO runs the policy using 
+N
+ parallel actors each collecting data, and then it samples mini-batches of this data to train for 
+K
+ epochs using the Clipped Surrogate Objective function. See full algorithm below (the approximate param values are: 
+K
+ = 3-15, 
+M
+ = 64-4096, 
+T
+ (horizon) = 128-2048):
+
+
+
+
+The parallel actors part was popularized by the 
+A3C paper
+ and has become a fairly standard way for collecting data.
+
+
+The newish part is that they are able to run 
+K
+ epochs of gradient ascent on the trajectory samples.  As they state in the paper, it would be nice to run the vanilla policy gradient optimization for multiple passes over the data so that you could learn more from each sample. However, this generally fails in practice for vanilla methods because they take too big of steps on the local samples and this wrecks the policy.  PPO, on the other hand, has the built-in mechanism to prevent too much of an update.
+
+
+For each iteration, after sampling the environment with π_old (line 3) and when we start running the optimization (line 6), our policy π will be exactly equal to π_old.  So at first, none of our updates will be clipped and we are guaranteed to learn something from these examples.  However, as we update π using multiple epochs, the objective will start hitting the clipping limits, the gradient will go to 0 for those samples, and the training will gradually stop...until we move on to the next iteration and collect new samples.
+
+
+....
+
+
+And that's all for now.  If you are interested in gaining a better understanding, I would recommend digging more into the 
+original paper
+, trying to implement it yourself, or diving into the 
+baselines implementation
+ and playing with the code.
+
+
+[edit: 2019/01/27]: For a better background and for how PPO relates to other RL algorithms, I would also strongly recommend checking out OpenAI's 
+Spinning Up resources and implementations
+.
+
+"
+How can I apply reinforcement learning to continuous action spaces?,"The common way of dealing with this problem is with 
+actor-critic methods
+. These naturally extend to continuous action spaces. Basic Q-learning could diverge when working with approximations, however, if you still want to use it, you can try combining it with a self-organizing map, as done in 
+""Applications of the self-organising map to reinforcement learning""
+. The paper also contains some further references you might find useful.
+
+"
+What is a policy in reinforcement learning?,"The definition is correct, though not instantly obvious if you see it for the first time. Let me put it this way: 
+a policy is an agent's strategy
+.
+
+
+For example, imagine a world where a robot moves across the room and the task is to get to the target point (x, y), where it gets a reward. Here:
+
+
+
+
+A room is an 
+environment
+
+
+Robot's current position is a 
+state
+
+
+A 
+policy
+ is what an agent does to accomplish this task: 
+
+
+
+
+dumb robots just wander around randomly until they accidentally end up in the right place (policy #1)
+
+
+others may, for some reason, learn to go along the walls most of the route (policy #2)
+
+
+smart robots plan the route in their ""head"" and go straight to the goal (policy #3)
+
+
+
+
+
+
+Obviously, some policies are better than others, and there are multiple ways to assess them, namely 
+state-value function
+ and 
+action-value function
+. The goal of RL is to learn the best policy. Now the definition should make more sense (note that in the context time is better understood as a state):
+
+
+A policy defines the learning agent's way of behaving at a given time.
+
+
+Formally
+
+
+More formally, we should first define 
+Markov Decision Process
+ (MDP) as a tuple (
+S
+, 
+A
+, 
+P
+, 
+R
+, 
+y
+), where:
+
+
+
+
+S
+ is a finite set of states
+
+
+A
+ is a finite set of actions
+
+
+P
+ is a state transition probability matrix (probability of ending up in a state for each current state and each action)
+
+
+R
+ is a reward function, given a state and an action
+
+
+y
+ is a discount factor, between 0 and 1
+
+
+
+
+Then, a policy 
+π
+ is a probability distribution over actions given states. That is the likelihood of every action when an agent is in a particular state (of course, I'm skipping a lot of details here). This definition corresponds to the second part of your definition.
+
+
+I highly recommend 
+David Silver's RL course
+ available on YouTube. The first two lectures focus particularly on MDPs and policies.
+
+"
+What is the difference between Q-learning and Value Iteration?,"You are 100% right that if we knew the transition probabilities and reward for every transition in Q-learning, it would be pretty unclear why we would use it instead of model-based learning or how it would even be fundamentally different. After all, transition probabilities and rewards are the two components of the model used in value iteration - if you have them, you have a model.
+
+
+The key is that, 
+in Q-learning, the agent does not know state transition probabilities or rewards
+. The agent only discovers that there is a reward for going from one state to another via a given action when it does so and receives a reward. Similarly, it only figures out what transitions are available from a given state by ending up in that state and looking at its options. If state transitions are stochastic, it learns the probability of transitioning between states by observing how frequently different transitions occur.
+
+
+A possible source of confusion here is that you, as the programmer, might know exactly how rewards and state transitions are set up. In fact, when you're first designing a system, odds are that you do as this is pretty important to debugging and verifying that your approach works. But you never tell the agent any of this - instead you force it to learn on its own through trial and error. 
+This is important if you want to create an agent that is capable of entering a new situation that you don't have any prior knowledge about and figuring out what to do.
+ Alternately, if you don't care about the agent's ability to learn on its own, 
+Q-learning might also be necessary if the state-space is too large to repeatedly enumerate.
+ Having the agent explore without any starting knowledge can be more computationally tractable.
+
+"
+OpenAI Gym: Understanding `action_space` notation (spaces.Box),"Box
+ means that you are dealing with real valued quantities.  
+
+
+The first array 
+np.array([-1,0,0]
+ are the lowest accepted values, and the second 
+np.array([+1,+1,+1])
+ are the highest accepted values. In this case (using the comment) we see that we have 3 available actions:
+
+
+
+
+Steering
+: Real valued in 
+[-1, 1]
+
+
+Gas
+: Real valued in 
+[0, 1]
+
+
+Brake
+: Real valued in 
+[0, 1]
+
+
+
+"
+What is the difference between reinforcement learning and deep RL?,"Reinforcement Learning
+
+
+In reinforcement learning, an agent tries to come up with the best action given a state.
+
+
+For example, in the video game Pac-Man, the state space would be the 2D game world you are in, the surrounding items (pac-dots, enemies, walls, etc), and actions would be moving through that 2D space (going up/down/left/right).
+
+
+So, given the state of the game world, the agent needs to pick the best action to maximise rewards. Through reinforcement learning's trial and error, it accumulates ""knowledge"" through these 
+(state, action)
+ pairs, as in, it can tell if there would be positive or negative reward given a 
+(state, action)
+ pair. Let's call this value 
+Q(state, action)
+.
+
+
+A rudimentary way to store this knowledge would be a table like below
+
+
+state | action | Q(state, action)
+---------------------------------
+  ... |   ...  |   ...
+
+
+
+The 
+(state, action)
+ space can be very big
+
+
+However, when the game gets complicated, the knowledge space can become huge and it no longer becomes feasible to store all 
+(state, action)
+ pairs. If you think about it in raw terms, even a slightly different state is still a distinct state (e.g. different position of the enemy coming through the same corridor). You could use something that can generalize the knowledge instead of 
+storing
+ and 
+looking up
+ every little distinct state.
+
+
+So, what you can do is create a neural network, that e.g. predicts the reward for an input 
+(state, action)
+ (or pick the best action given a state, however you like to look at it)
+
+
+Approximating the 
+Q
+ value with a Neural Network
+
+
+So, what you effectively have is 
+a NN that 
+predicts
+ the 
+Q
+ value
+, based on the input 
+(state, action)
+. This is way more tractable than storing every possible value like we did in the table above.
+
+
+Q = neural_network.predict(state, action)
+
+
+
+Deep Reinforcement Learning
+
+
+Deep Neural Networks
+
+
+To be able to do that for complicated games, the NN may need to be ""deep"", meaning a few hidden layers may not suffice to capture all the intricate details of that knowledge, hence the use of deep NNs (lots of hidden layers).
+
+
+The extra hidden layers allows the network to internally come up with features that can help it learn and generalize complex problems that may have been impossible on a shallow network.
+
+
+Closing words
+
+
+In short, the deep neural network allows reinforcement learning to be applied to larger problems. You can use any function approximator instead of an NN to approximate 
+Q
+, and if you do choose NNs, it doesn't 
+absolutely
+ have to be a deep one. It's just researchers have had great success using them recently.
+
+"
+When should I use support vector machines as opposed to artificial neural networks?,"Are SVMs better than ANN with many classes
+?
+ You are probably referring to the fact that SVMs are in essence, either either one-class or two-class classifiers. Indeed they are and there's no way to modify a SVM algorithm to classify more than two classes.
+
+
+The fundamental feature of a SVM is the separating maximum-margin hyperplane whose position is determined by maximizing its distance from the support vectors. And yet SVMs are routinely used for multi-class classification, which is accomplished with a processing wrapper around multiple SVM classifiers that work in a ""one against many"" pattern--i.e., the training data is shown to the first SVM which classifies those instances as ""
+Class I
+"" or ""
+not Class I
+"". The data in the second class, is then shown to a second SVM which classifies this data as ""
+Class II
+"" or ""
+not Class II
+"", and so on. In practice, this works quite well. So as you would expect, the superior resolution of SVMs compared to other classifiers is not limited to two-class data. 
+
+
+As far as i can tell, the studies reported in the literature confirm this, e.g., In the provocatively titled paper 
+Sex with Support Vector Machines
+ substantially better resolution for sex identification (Male/Female) in 12-square pixel images, was reported for SVM compared with that of a group of traditional linear classifiers; SVM also outperformed RBF NN, as well as large ensemble RBF NN). But there seem to be plenty of similar evidence for the superior performance of SVM in multi-class problems: e.g., SVM outperformed NN in 
+protein-fold recognition
+, and in 
+time-series forecasting
+.
+
+
+My impression from reading this literature over the past decade or so, is that the majority of the carefully designed studies--by persons skilled at configuring and using both techniques, and using data sufficiently resistant to classification to provoke some meaningful difference in resolution--report the superior performance of SVM relative to NN. But as your Question suggests, that performance delta seems to be, to a degree, domain specific.
+
+
+For instance, NN outperformed SVM in a 
+comparative study
+ of 
+author identification
+ from texts in Arabic script; In a 
+study
+ comparing 
+credit rating prediction
+, there was no discernible difference in resolution by the two classifiers; a similar result was reported in a  
+study
+ of 
+high-energy particle classification
+.
+
+
+I have read, from more than one 
+source
+ in the academic literature, that SVM outperforms NN as the size of the training data decreases.
+
+
+Finally, the extent to which one can generalize from the results of these comparative studies is probably quite limited. For instance, in one study comparing the accuracy of SVM and NN in time series forecasting, the investigators 
+reported
+ that SVM did indeed outperform a conventional (back-propagating over layered nodes) NN but performance of the SVM was about the same as that of an RBF (radial basis function) NN.
+
+
+[Are SVMs better than ANN] In an Online setting
+?
+ SVMs are not used in an online setting (i.e., incremental training). The essence of SVMs is the separating hyperplane whose position is determined by a small number of 
+support vectors
+. So even a single additional data point could in principle significantly influence the position of this hyperplane.
+
+
+What about in a semi-supervised case like reinforcement learning
+?
+ Until the OP's comment to this answer, i was not aware of either Neural Networks or SVMs used in this way--but they are. 
+
+
+The most widely used- semi-supervised variant of SVM is named 
+Transductive SVM
+ (TSVM), first mentioned by 
+Vladimir Vapnick
+ (the same guy who discovered/invented conventional SVM). I know almost nothing about this technique other than what's it is called and that is follows the principles of transduction (roughly 
+lateral reasoning
+--i.e., reasoning from training data to test data). Apparently TSV is a preferred technique in the field of 
+text classification
+.
+
+
+Is there a better unsupervised version of SVMs
+?
+ I don't believe SVMs are suitable for unsupervised learning. Separation is based on the position of the maximum-margin hyperplane determined by support vectors. This could easily be my own limited understanding, but i don't see how that would happen if those support vectors were unlabeled (i.e., if you didn't know before-hand what you were trying to separate). One crucial use case of unsupervised algorithms is when you don't have labeled data or you do and it's badly unbalanced. E.g., online fraud; here you might have in your training data, only a few data points labeled as ""fraudulent accounts"" (and usually with questionable accuracy) versus the remaining >99% labeled ""not fraud."" In this scenario, a 
+one-class classifier
+, a typical configuration for SVMs, is the a good option. In particular, the training data consists of instances labeled ""not fraud"" and ""unk"" (or some other label to indicate they are not in the class)--in other words, ""inside the decision boundary"" and ""outside the decision boundary."" 
+
+
+
+I wanted to conclude by mentioning that, 20 years after their ""discovery"", the SVM is a firmly entrenched member in the ML library. And indeed, the consistently superior resolution compared with other state-of-the-art classifiers is well documented. 
+
+
+Their pedigree is both a function of their superior performance documented in numerous rigorously controlled studies as well as their conceptual elegance. W/r/t the latter point, consider that multi-layer perceptrons (MLP), though they are often excellent classifiers, are driven by a numerical optimization routine, which in practice rarely finds the global minimum; moreover, that solution has no conceptual significance. On the other hand, the numerical optimization at the heart of building an SVM classifier does in fact find the global minimum. What's more that solution is the actual decision boundary.
+
+
+Still, i think SVM reputation has declined a little during the past few years. 
+
+
+The primary reason i suspect is the NetFlix competition. NetFlix emphasized the resolving power of fundamental techniques of matrix decomposition and even more significantly t*he power of 
+combining classifiers
+. People combined classifiers long before NetFlix, but more as a contingent technique than as an attribute of classifier design. Moreover, many of the techniques for combining classifiers are extraordinarily simple to understand and also to implement. By contrast, SVMs are not only very difficult to code (in my opinion, by far the most difficult ML algorithm to implement in code) but also difficult to configure and implement as a pre-compiled library--e.g., a kernel must be selected, the results are very sensitive to how the data is re-scaled/normalized, etc.
+
+"
+Openai gym environment for multi-agent games,"Yes, it is possible to use OpenAI gym environments for multi-agent games. Although in the OpenAI gym community 
+there is no standardized interface
+ for multi-agent environments, it is easy enough to build an OpenAI gym that supports this. For instance, in OpenAI's 
+recent work
+ on multi-agent particle environments 
+they make a multi-agent environment
+ that inherits from 
+gym.Env
+ which takes the following form:
+
+
+class MultiAgentEnv(gym.Env):
+
+    def step(self, action_n):
+        obs_n    = list()
+        reward_n = list()
+        done_n   = list()
+        info_n   = {'n': []}
+        # ...
+        return obs_n, reward_n, done_n, info_n
+
+
+
+We can see that the 
+step
+ function takes a list of actions (one for each agent) and returns a list of observations, list of rewards, list of dones, while stepping the environment forwards. This interface is representative of 
+Markov Game
+, in which all agents take actions 
+at the same time
+ and each observe their own subsequent observation, reward.
+
+
+However, this kind of Markov Game interface may not be suitable for all multi-agent environments. In particular, turn-based games (such as card games) might be better cast as an 
+alternating
+ Markov Game, in which agents 
+take turns
+ (i.e. actions) one at a time. For this kind of environment, you may need to include which agent's turn it is in the representation of state, and your step function would then just take a single action, and return a single observation, reward and done.
+
+"
+Pytorch ValueError: optimizer got an empty parameter list,"Your 
+NetActor
+ does not directly store any 
+nn.Parameter
+. Moreover, all other layers it eventually uses in 
+forward
+ are stored as a 
+simple
+ list in 
+self.nn_layers
+.
+
+If you want 
+self.actor_nn.parameters()
+ to know that the items stored in the list 
+self.nn_layers
+ may contain trainable parameters, you should work with 
+containers
+.
+
+Specifically, making 
+self.nn_layers
+ to be a 
+nn.ModuleList
+ instead of a simple list should solve your problem:
+
+
+self.nn_layers = nn.ModuleList()
+
+
+"
+Tensorflow and Multiprocessing: Passing Sessions,"You can't use Python multiprocessing to pass a TensorFlow 
+Session
+ into a 
+multiprocessing.Pool
+ in the straightfoward way because the 
+Session
+ object can't be pickled (it's fundamentally not serializable because it may manage GPU memory and state like that).
+
+
+I'd suggest parallelizing the code using 
+actors
+, which are essentially the parallel computing analog of ""objects"" and use used to manage state in the distributed setting.
+
+
+Ray
+ is a good framework for doing this. You can define a Python class which manages the TensorFlow 
+Session
+ and exposes a method for running your simulation.
+
+
+import ray
+import tensorflow as tf
+
+ray.init()
+
+@ray.remote
+class Simulator(object):
+    def __init__(self):
+        self.sess = tf.Session()
+        self.simple_model = tf.constant([1.0])
+
+    def simulate(self):
+        return self.sess.run(self.simple_model)
+
+# Create two actors.
+simulators = [Simulator.remote() for _ in range(2)]
+
+# Run two simulations in parallel.
+results = ray.get([s.simulate.remote() for s in simulators])
+
+
+
+Here are a few more examples of 
+parallelizing TensorFlow with Ray
+.
+
+
+See the 
+Ray documentation
+. Note that I'm one of the Ray developers.
+
+"
+NameError: name &#39;base&#39; is not defined OpenAI Gym,"Solving your issue required getting the right combination of system dependencies and python dependencies. Paste this code into a cell in Colab and run it to install all of the dependencies (taking note of the specific version numbers used).
+
+
+%%bash
+
+# install required system dependencies
+apt-get install -y xvfb x11-utils
+
+# install required python dependencies (might need to install additional gym extras depending)
+pip install gym[box2d]==0.17.* pyvirtualdisplay==0.2.* PyOpenGL==3.1.* PyOpenGL-accelerate==3.1.*
+
+
+
+The final step is to run the following block of code to properly initialize the virtual display. The code in the below creates a virtual display in the background that your Gym Envs can connect to for rendering. You can adjust the size of the virtual buffer as you like but you must set 
+visible=False
+ when working with Xvfb.
+
+
+This code only needs to be run once per session to start the display.
+
+
+import pyvirtualdisplay
+
+
+_display = pyvirtualdisplay.Display(visible=False,  # use False with Xvfb
+                                    size=(1400, 900))
+_ = _display.start()
+
+
+
+For additional details check out the following 
+blog post
+.
+
+"
+Difference between OpenAI Gym environments &#39;CartPole-v0&#39; and &#39;CartPole-v1&#39;,"As you probably have noticed, in OpenAI Gym sometimes there are different versions of the same environments. The different versions usually share the main environment logic but some parameters are configured with different values. These versions are managed using a feature called 
+the registry
+.
+
+
+In the case of the CartPole environment, you can find the two registered versions in 
+this source code
+. As you can see in lines 50 to 65, there exist two CartPole versions, tagged as v0 and v1, whose differences are the parameters 
+max_episode_steps
+ and 
+reward_threshold
+:
+
+
+register(
+    id='CartPole-v0',
+    entry_point='gym.envs.classic_control:CartPoleEnv',
+    max_episode_steps=200,
+    reward_threshold=195.0,
+)
+
+register(
+    id='CartPole-v1',
+    entry_point='gym.envs.classic_control:CartPoleEnv',
+    max_episode_steps=500,
+    reward_threshold=475.0,
+)
+
+
+
+Both parameters confirm your guess about the difference between CartPole-v0 and CartPole-v1.
+
+"
+Good implementations of reinforcement learning?,"Take a look at the 2009 
+RL-competition
+. One of the problem domains is a 
+tetris game
+. There was a tetris problem the year before too. Here’s the 
+52-page final report
+ from that year’s fifth-place finalist, which goes into a lot of detail about how the agent worked.
+
+"
+How to effectively make use of a GPU for reinforcement learning?,"Indeed, you will often have interactions with the environment in between learning steps, which will often be better off running on CPU than GPU. So, if your code for taking actions and your code for running an update / learning step are very fast (as in, for example, tabular RL algorithms), it won't be worth the effort of trying to get those on the GPU.
+
+
+However, when you have a big neural network, that you need to go through whenever you select an action or run a learning step (as is the case in most of the Deep Reinforcement Learning approaches that are popular these days), the speedup of running these on GPU instead of CPU is often enough for it to be worth the effort of running them on GPU (even if it means you're quite regularly ''switching'' between CPU and GPU, and may need to copy some things from RAM to VRAM or the other way around). It is also relatively common practice to batch up states from multiple different episodes that are running in parallel (either truly in paralell with multiple CPU threads, or even just sequentially taking one time step in each episode), and have a GPU (or TPU) process them all at once. This is because, usually, we have enough VRAM to fit multiple forwards and backwards passes for multiple different states at once on the GPU.
+
+
+
+
+More recently* there is also a trend where people try to actually have the logic of the environment itself also running as much as possible in parallel, on devices such as GPUs or TPUs. Examples include 
+Google's brax
+ for physics simulation, and 
+JAX-LOB
+ for RL-based trading on financial exchanges.
+
+
+*wrote this as an edit in 2023, original answer was from 2018.
+
+"
+Q-learning vs temporal-difference vs model-based reinforcement learning,"Temporal Difference
+ is 
+an approach to learning how to predict a quantity that depends on future values of a given signal
+. It can be used to learn both the V-function and the Q-function, whereas 
+Q-learning
+ is a specific TD algorithm used to learn the Q-function. As stated by Don Reba, you need the Q-function to perform an action (e.g., following an epsilon-greedy policy). If you have only the V-function you can still derive the Q-function by iterating over all the possible next states and choosing the action which leads you to the state with the highest V-value. For examples and more insights, I recommend the 
+classic book from Sutton and Barto
+.
+
+
+In 
+model-free
+ RL you don't learn the state-transition function (
+the model
+) and you can rely only on samples. However, you might be interested also in learning it, for example because you cannot collect many samples and want to generate some virtual ones. In this case we talk about 
+model-based
+ RL.
+Model-based RL is quite common in robotics, where you cannot perform many real simulations or the robot will break. 
+This
+ is a good survey with many examples (but it only talks about policy search algorithms). For another example have a look at 
+this paper
+. Here the authors learn - along with a policy - a Gaussian process to approximate the forward model of the robot, in order to simulate trajectories and to reduce the number of real robot interaction.
+
+"
+Epsilon and learning rate decay in epsilon greedy q learning,"
+
+At the beginning, you want epsilon to be high so that you take big leaps and learn things
+
+
+
+
+I think you have have mistaken epsilon and learning rate. This definition is actually related to the learning rate.
+
+
+Learning rate decay
+
+
+Learning rate is how big you take a leap in finding optimal policy. In the terms of simple QLearning it's how much you are updating the Q value with each step. 
+
+
+
+
+Higher 
+alpha
+ means you are updating your Q values in big steps. When the agent is learning you should decay this to stabilize your model output which eventually converges to an optimal policy.
+
+
+Epsilon Decay
+
+
+Epsilon is used when we are selecting specific actions base on the Q values we already have. As an example if we select pure greedy method ( epsilon = 0 ) then we are always selecting the highest q value among the all the q values for a specific state. This causes issue in exploration as we can get stuck easily at a local optima.
+
+
+Therefore we introduce a randomness using epsilon. As an example if epsilon = 0.3 then we are selecting random actions with 0.3 probability regardless of the actual q value.
+
+
+Find more details on epsilon-greedy policy 
+here
+.
+
+
+In conclusion learning rate is associated with how big you take a leap and epsilon is associated with how random you take an action. As the learning goes on both should decayed to stabilize and exploit the learned policy which converges to an optimal one.
+
+"
+Display OpenAI gym in Jupyter notebook only,"I made a working example here that you can fork: 
+https://kyso.io/eoin/openai-gym-jupyter
+ with two examples of rendering in Jupyter - one as an mp4, and another as a realtime gif.
+
+
+The .mp4 example is quite simple.
+
+
+import gym
+from gym import wrappers
+
+env = gym.make('SpaceInvaders-v0')
+env = wrappers.Monitor(env, ""./gym-results"", force=True)
+env.reset()
+for _ in range(1000):
+    action = env.action_space.sample()
+    observation, reward, done, info = env.step(action)
+    if done: break
+env.close()
+
+
+
+Then in a new cell
+
+
+import io
+import base64
+from IPython.display import HTML
+
+video = io.open('./gym-results/openaigym.video.%s.video000000.mp4' % env.file_infix, 'r+b').read()
+encoded = base64.b64encode(video)
+HTML(data='''
+    <video width=""360"" height=""auto"" alt=""test"" controls><source src=""data:video/mp4;base64,{0}"" type=""video/mp4"" /></video>'''
+.format(encoded.decode('ascii')))
+
+
+"
+Optimal epsilon (ϵ-greedy) value,"Although in many simple cases the εk is kept as a fixed number in range 0 and 1, you should know that:
+Usually, the exploration diminishes over time, so that the policy used asymptotically becomes greedy and therefore (as Qk → Q∗) optimal. This can be achieved by making εk approach 0 as k grows. For instance, an ε -greedy exploration schedule of the form εk = 1/k diminishes to 0 as k → ∞, while still satisfying the second convergence condition of Q-learning, i.e., while allowing infinitely many visits to all the state-action pairs (Singh et al., 2000).
+
+
+What I do usually is this:
+set the initial alpha = 1/k (consider the initial k = 1 or 2)
+after you go trial by trial as k increases the alpha will decrease.
+it also keeps the convergence guaranteed.
+
+"
+DQN - Q-Loss not converging,"Yes, the loss must coverage, because of the loss value means the difference between expected Q value and current Q value. Only when loss value converges, the current approaches optimal Q value. If it diverges, this means your approximation value is less and less accurate. 
+
+
+Maybe you can try adjusting the update frequency of the target network or check the gradient of each update (add gradient clipping). The addition of the target network increases the stability of the Q-learning. 
+
+
+In Deepmind's 2015 Nature paper, it states that:
+
+
+
+
+The second modification to online Q-learning aimed at further improving the stability of our method with neural networks is to use a separate network for generating the traget yj in the Q-learning update. More precisely, every C updates we clone the network Q to obtain a target network Q' and use Q' for generating the Q-learning targets y
+j
+ for the following C updates to Q. 
+  This modification makes the algorithm more stable compared to standard online Q-learning, where an update that increases Q(s
+t
+,a
+t
+) often also increases Q(s
+t+1
+, a) for all a and hence also increases the target y
+j
+, possibly leading to oscillations or divergence of the policy. Generating the targets using the older set of parameters adds a delay between the time an update to Q is made and the time the update affects the targets y
+j
+, making divergence or oscillations much more unlikely.  
+
+
+
+
+Human-level control through deep reinforcement
+learning, Mnih et al., 2015
+
+
+I've made an experiment for another person asked similar questions in the Cartpole environment, and the update frequency of 100 solves the problem (achieve a maximum of 200 steps).
+
+
+When C (update frequency) = 2, Plotting of the average loss:
+
+
+
+C = 10
+
+
+
+
+C = 100
+
+
+
+
+C = 1000
+
+
+
+
+C = 10000
+
+
+
+
+If the divergence of loss value is caused by gradient explode, you can clip the gradient. In Deepmind's 2015 DQN, the author clipped the gradient by limiting the value within [-1, 1]. In the other case, the author of 
+Prioritized Experience Replay
+ clip gradient by limiting the norm within 10. Here're the examples:
+
+
+DQN gradient clipping: 
+
+
+    optimizer.zero_grad()
+    loss.backward()
+    for param in model.parameters():
+        param.grad.data.clamp_(-1, 1)
+    optimizer.step()
+
+
+
+PER gradient clipping:
+
+
+    optimizer.zero_grad()
+    loss.backward()
+    if self.grad_norm_clipping:
+       torch.nn.utils.clip_grad.clip_grad_norm_(self.model.parameters(), 10)
+   optimizer.step()
+
+
+"
+When to use a certain Reinforcement Learning algorithm?,"Briefly:
+
+
+does the agent learn online or offline?
+ helps you to decide either using on-line or off-line algorithms. (e.g. on-line: SARSA, off-line: Q-learning). On-line methods have more limitations and need more attention to pay.
+
+
+can we separate exploring and exploiting phases?
+ These two phase are normally in a balance. For example in epsilon-greedy action selection, you use an (epsilon) probability for exploiting and (1-epsilon) probability for exploring. You can separate these two and ask the algorithm just explore first (e.g. choosing random actions) and then exploit. But this situation is possible when you are learning off-line and probably using a model for the dynamics of the system. And it normally means collecting a lot of sample data in advance.
+
+
+can we perform enough exploration?
+ The level of exploration can be decided depending on the definition of the problem. For example, if you have a simulation model of the problem in memory, then you can explore as you want. But real exploring is limited to amount of resources you have. (e.g. energy, time, ...)
+
+
+are states and actions continuous?
+ Considering this assumption helps to choose the right approach (algorithm). There are both discrete and continuous algorithms developed for RL. Some of ""continuous"" algorithms internally discretize the state or action spaces.
+
+"
+Running Keras model for prediction in multiple threads,"multi threading in python doesn't necessarily make a better use of your resources since python uses 
+ global interpreter lock
+ and only one native thread can run at a time.
+
+
+in python, usually you should use multi processing to utilize your resources, but since we're talking about keras models, I'm not sure even that is the right thing to do.
+loading several models in several processes has its own overhead, and you could simply increase the batch size as others have already pointed out.
+
+
+OR if you have a heavy pre-processing stage you could preprocess your data in one process and predict them in another (although I doubt that would be necessary either).
+
+"
+PyTorch Model Training: RuntimeError: cuDNN error: CUDNN_STATUS_INTERNAL_ERROR,"The error 
+RuntimeError: cuDNN error: CUDNN_STATUS_INTERNAL_ERROR
+ is notoriously difficult to debug, but surprisingly often it's an out of memory problem. Usually, you would get the out of memory error, but depending on where it occurs, PyTorch cannot intercept the error and therefore not provide a meaningful error message.
+
+
+A memory issue seems to be likely in your case, because you are using a while loop until the agent is done, which might take long enough that you run out of memory, it's just a matter of time. That can also possibly occur rather late, once the model's parameters in combination with a certain input is unable to finish in time.
+
+
+You can avoid that scenario by limiting the number of allowed actions instead of hoping that the actor will be done in a reasonable time.
+
+
+What you also need to be careful about, is that you don't occupy unnecessary memory. A common mistake is to keep computing gradients of the past states in future iterations. The state from the last iteration should be considered constant, since the current action should not affect past actions, therefore no gradients are required. This is usually achieved by detaching the state from the computational graph for the next iteration, e.g. 
+state = state_.detach()
+. Maybe you are already doing that, but without the code it's impossible to tell.
+
+
+Similarly, if you keep a history of the states, you should detach them and even more importantly put them on the CPU, i.e. 
+history.append(state.detach().cpu())
+.
+
+"
+List all environment id in openai gym,"Use 
+envs.registry.all()
+:
+
+
+from gym import envs
+print(envs.registry.all())
+
+
+
+Out:
+
+
+
+
+dict_values([EnvSpec(Copy-v0), EnvSpec(RepeatCopy-v0), EnvSpec(ReversedAddition-v0), EnvSpec(ReversedAddition3-v0), EnvSpec(DuplicatedInput-v0), EnvSpec(Reverse-v0), EnvSpec(CartPole-v0), ...])
+
+
+
+
+This returns a large collection of 
+EnvSpec
+ objects, not specifically of the IDs as you asked. You can get those like this:
+
+
+from gym import envs
+all_envs = envs.registry.all()
+env_ids = [env_spec.id for env_spec in all_envs]
+print(sorted(env_ids))
+
+
+
+Out:
+
+
+
+
+['Acrobot-v1', 'Ant-v2', 'Ant-v3', 'BipedalWalker-v3', 'BipedalWalkerHardcore-v3', 'Blackjack-v1', 'CarRacing-v0', 'CartPole-v0', 'CartPole-v1', ...]
+
+
+
+"
+Understanding Gradient Policy Deriving,"The problem is with 
+grad
+ method.
+
+
+def grad(self, probs, action, state):
+    dsoftmax = self.sigmoid_grad(probs)
+    dlog = dsoftmax / probs
+    grad = state.T.dot(dlog)
+    grad = grad.reshape(5, 1)
+    return grad
+
+
+
+In the original code Softmax was used along with CrossEntropy loss function. When you switch activation to Sigmoid, the proper loss function becomes Binary CrossEntropy. Now, the purpose of 
+grad
+ method is to calculate gradient of the loss function wrt. weights. 
+Sparing
+ the details, proper gradient is given by 
+(probs - action) * state
+ in the terminology of your program. The last thing is to add minus sign - we want to maximize the negative of the loss function.
+
+
+Proper 
+grad
+ method thus:
+
+
+def grad(self, probs, action, state):
+    grad = state.T.dot(probs - action)
+    return -grad
+
+
+
+Another change that you might want to add is to increase learning rate.
+
+LEARNING_RATE = 0.0001
+ and 
+NUM_EPISODES = 5000
+ will produce the following plot:
+
+
+
+
+The convergence will be much faster if weights are initialized using Gaussian distribution with zero mean and small variance:
+
+
+def __init__(self):
+    self.poly = PolynomialFeatures(1)
+    self.w = np.random.randn(5, 1) * 0.01
+
+
+
+
+
+UPDATE
+
+
+Added complete code to reproduce the results:
+
+
+import gym
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import PolynomialFeatures
+
+NUM_EPISODES = 5000
+LEARNING_RATE = 0.0001
+GAMMA = 0.99
+
+
+# noinspection PyMethodMayBeStatic
+class Agent:
+    def __init__(self):
+        self.poly = PolynomialFeatures(1)
+        self.w = np.random.randn(5, 1) * 0.01
+
+    # Our policy that maps state to action parameterized by w
+    # noinspection PyShadowingNames
+    def policy(self, state):
+        z = np.sum(state.dot(self.w))
+        return self.sigmoid(z)
+
+    def sigmoid(self, x):
+        s = 1 / (1 + np.exp(-x))
+        return s
+
+    def sigmoid_grad(self, sig_x):
+        return sig_x * (1 - sig_x)
+
+    def grad(self, probs, action, state):
+        grad = state.T.dot(probs - action)
+        return -grad
+
+    def update_with(self, grads, rewards):
+        if len(grads) < 50:
+            return
+        for i in range(len(grads)):
+            # Loop through everything that happened in the episode
+            # and update towards the log policy gradient times **FUTURE** reward
+
+            total_grad_effect = 0
+            for t, r in enumerate(rewards[i:]):
+                total_grad_effect += r * (GAMMA ** r)
+            self.w += LEARNING_RATE * grads[i] * total_grad_effect
+
+
+def main(argv):
+    env = gym.make('CartPole-v0')
+    np.random.seed(1)
+
+    agent = Agent()
+    complete_scores = []
+
+    for e in range(NUM_EPISODES):
+        state = env.reset()[None, :]
+        state = agent.poly.fit_transform(state)
+
+        rewards = []
+        grads = []
+        score = 0
+
+        while True:
+
+            probs = agent.policy(state)
+            action_space = env.action_space.n
+            action = np.random.choice(action_space, p=[1 - probs, probs])
+
+            next_state, reward, done, _ = env.step(action)
+            next_state = next_state[None, :]
+            next_state = agent.poly.fit_transform(next_state.reshape(1, 4))
+
+            grad = agent.grad(probs, action, state)
+            grads.append(grad)
+            rewards.append(reward)
+
+            score += reward
+            state = next_state
+
+            if done:
+                break
+
+        agent.update_with(grads, rewards)
+        complete_scores.append(score)
+
+    env.close()
+    plt.plot(np.arange(NUM_EPISODES),
+             complete_scores)
+    plt.savefig('image1.png')
+
+
+if __name__ == '__main__':
+    main(None)
+
+
+"
+net.zero_grad() vs optim.zero_grad() pytorch,"net.zero_grad()
+ sets the gradients of all its parameters (including parameters of submodules) to zero. If you call 
+optim.zero_grad()
+ that will do the same, but for all parameters that have been specified to be optimised. If you are using only 
+net.parameters()
+ in your optimiser, e.g. 
+optim = Adam(net.parameters(), lr=1e-3)
+, then both are equivalent, since they contain the exact same parameters.
+
+
+You could have other parameters that are being optimised by the same optimiser, which are not part of 
+net
+, in which case you would either have to manually set their gradients to zero and therefore keep track of all the parameters, or you can simply call 
+optim.zero_grad()
+ to ensure that all parameters that are being optimised, had their gradients set to zero.
+
+
+
+
+Moreover, what happens if I do both?
+
+
+
+
+Nothing, the gradients would just be set to zero again, but since they were already zero, it makes absolutely no difference.
+
+
+
+
+If I do none, then the gradients get accumulated, but what does that exactly mean? do they get added?
+
+
+
+
+Yes, they are being added to the existing gradients. In the backward pass the gradients in respect to every parameter are calculated, and then the gradient is added to the parameters' gradient (
+param.grad
+). That allows you to have multiple backward passes, that affect the same parameters, which would not be possible if the gradients were overwritten instead of being added.
+
+
+For example, you could accumulate the gradients over multiple batches, if you need bigger batches for training stability but don't have enough memory to increase the batch size. This is trivial to achieve in PyTorch, which is essentially leaving off 
+optim.zero_grad()
+ and delaying 
+optim.step()
+ until you have gathered enough steps, as shown in 
+HuggingFace - Training Neural Nets on Larger Batches: Practical Tips for 1-GPU, Multi-GPU & Distributed setups
+.
+
+
+That flexibility comes at the cost of having to manually set the gradients to zero. Frankly, one line is a very small cost to pay, even though many users won't make use of it and especially beginners might find it confusing.
+
+"
+EM score in SQuAD Challenge,"
+
+Exact match.
+ This  metric  measures  the  percentage of predictions
+that  match any one of the ground truth answers exactly.
+
+
+
+
+According to 
+here
+.
+
+"

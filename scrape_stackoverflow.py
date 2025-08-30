@@ -1,3 +1,4 @@
+import textwrap
 import re
 from langgraph_faq import graph
 from rich.console import Console
@@ -6,10 +7,10 @@ from rich.markdown import Markdown
 console = Console()
 
 def clean_answer(answer: str) -> str:
-    # Collapse excessive blank lines
+    # Remove excess newlines
     answer = re.sub(r"\n{3,}", "\n\n", answer.strip())
 
-    # Fix HTML entities
+    # Convert HTML entities if needed
     answer = answer.replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
 
     return answer
@@ -29,7 +30,7 @@ def main():
         if "answer" in result:
             answer = clean_answer(result["answer"])
             console.print("\n🤖 [bold green]Answer:[/bold green]\n")
-            console.print(Markdown(answer))   # FULL markdown rendering (tables, code, etc.)
+            console.print(Markdown(answer))   # renders markdown beautifully in terminal
             console.print("\n" + "-" * 80)
 
         elif "followup" in result:
