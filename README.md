@@ -140,7 +140,6 @@ You: What is the difference between Q-learning and SARSA?
 
 ## 🔧 Tech Stack
 
-* Python 3.9+
 * [LangGraph](https://www.langgraph.dev/)
 * [LangChain](https://www.langchain.com/)
 * [HuggingFace Embeddings](https://huggingface.co/sentence-transformers/all-mpnet-base-v2)
