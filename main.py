@@ -12,7 +12,14 @@ def clean_answer(answer: str) -> str:
     # Fix HTML entities
     answer = answer.replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
 
+    # Detect LaTeX \begin{...} \end{...} → wrap in ```latex
+    answer = re.sub(r"(\\begin\{.*?\}[\s\S]*?\\end\{.*?\})", r"```latex\n\1\n```", answer)
+
+    # Detect JSON/code → wrap in ```json
+    answer = re.sub(r"(\{[\s\S]*\})", r"```json\n\1\n```", answer)
+
     return answer
+
 
 def main():
     console.print("[bold blue]📘 Smart FAQ System (Type 'quit' to exit)[/bold blue]\n")
@@ -29,7 +36,7 @@ def main():
         if "answer" in result:
             answer = clean_answer(result["answer"])
             console.print("\n🤖 [bold green]Answer:[/bold green]\n")
-            console.print(Markdown(answer))   # FULL markdown rendering (tables, code, etc.)
+            console.print(Markdown(answer))   # Rich will now render code blocks
             console.print("\n" + "-" * 80)
 
         elif "followup" in result:

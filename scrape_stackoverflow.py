@@ -1,42 +1,36 @@
-import textwrap
-import re
-from langgraph_faq import graph
-from rich.console import Console
-from rich.markdown import Markdown
+import pandas as pd
+from stackapi import StackAPI
+from bs4 import BeautifulSoup
 
-console = Console()
+# Topics to scrape
+topics = ["reinforcement learning", "supervised learning", "unsupervised learning", "semi-supervised learning"]
 
-def clean_answer(answer: str) -> str:
-    # Remove excess newlines
-    answer = re.sub(r"\n{3,}", "\n\n", answer.strip())
+SITE = StackAPI('stackoverflow')
+SITE.max_pages = 3   # scrape 3 pages per topic
+SITE.page_size = 50
 
-    # Convert HTML entities if needed
-    answer = answer.replace("&gt;", ">").replace("&lt;", "<").replace("&amp;", "&")
+all_data = []
 
-    return answer
+for topic in topics:
+    print(f"🔍 Scraping for topic: {topic}")
+    questions = SITE.fetch('search/advanced', q=topic, site='stackoverflow', filter='withbody')
+    
+    for item in questions['items']:
+        q_title = item.get('title', '')
+        q_body = BeautifulSoup(item.get('body', ''), "html.parser").get_text()
+        accepted_answer_id = item.get('accepted_answer_id', None)
 
-def main():
-    console.print("[bold blue]📘 Smart FAQ System (Type 'quit' to exit)[/bold blue]\n")
+        if accepted_answer_id:
+            ans = SITE.fetch(f'answers/{accepted_answer_id}', filter='withbody')
+            if ans['items']:
+                answer_body = BeautifulSoup(ans['items'][0]['body'], "html.parser").get_text()
+                all_data.append({
+                    "topic": topic,
+                    "question": q_title,
+                    "answer": answer_body
+                })
 
-    while True:
-        user_input = input("You: ")
-        if user_input.strip().lower() == "quit":
-            console.print("[bold red]👋 Goodbye![/bold red]")
-            break
-
-        initial_state = {"question": user_input}
-        result = graph.invoke(initial_state)
-
-        if "answer" in result:
-            answer = clean_answer(result["answer"])
-            console.print("\n🤖 [bold green]Answer:[/bold green]\n")
-            console.print(Markdown(answer))   # renders markdown beautifully in terminal
-            console.print("\n" + "-" * 80)
-
-        elif "followup" in result:
-            console.print("🤖 [yellow]Follow-up:[/yellow]", result["followup"])
-        else:
-            console.print("🤖 [red]Sorry, I couldn't understand your question.[/red]")
-
-if __name__ == "__main__":
-    main()
+# Save to CSV
+df = pd.DataFrame(all_data)
+df.to_csv("stackoverflow_faq.csv", index=False, encoding="utf-8")
+print(f"✅ Saved {len(df)} Q&A pairs to stackoverflow_faq.csv")
