@@ -17,7 +17,7 @@ r = np.random.uniform(self.expected_vals[a], 0.5, 1)
 I've also increased the variance to 0.5 as 0.01 is basically meaningless variance in the context of bandits. If your agents works correctly, his average reward should be approximately equal to np.max(self.expected_vals)
 "
 reinforcement learning,`stack()` vs `cat()` in PyTorch,"stack
-
+ 
 Concatenates sequence of tensors along a new dimension.
 
 cat
